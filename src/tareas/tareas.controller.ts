@@ -14,13 +14,14 @@ import { TareasService } from './tareas.service';
 import { EstadoTarea, Tarea } from './tarea.model';
 import { CrearTareaDto } from './dto/crear-tarea-dto';
 import { ObtenerTareaFilterDto } from './dto/obtener-tarea-filter.dto';
+import { TareaEstadoValidationPipe } from './pipes/tarea-estado-validation.pipe';
 
 @Controller('tareas')
 export class TareasController {
   constructor(private tareaService: TareasService) {}
 
   @Get()
-  getTareas(@Query() filterDto: ObtenerTareaFilterDto): Tarea[] {
+  getTareas(@Query(ValidationPipe) filterDto: ObtenerTareaFilterDto): Tarea[] {
     console.log(filterDto);
 
     if (Object.keys(filterDto).length) {
@@ -49,7 +50,7 @@ export class TareasController {
   @Patch('/:id/status')
   updateTareaStatus(
     @Param('id') id: string,
-    @Body('estado') status: EstadoTarea,
+    @Body('estado', TareaEstadoValidationPipe) status: EstadoTarea,
   ): Tarea {
     return this.tareaService.updateTareaStatus(id, status);
   }
