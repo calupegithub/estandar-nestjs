@@ -1,14 +1,13 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Tarea, EstadoTarea } from './tarea.model';
-import { v1 as uuid } from 'uuid';
+import { Tarea} from './tarea.model';
 import { CrearTareaDto } from './dto/crear-tarea-dto';
 import { ObtenerTareaFilterDto } from './dto/obtener-tarea-filter.dto';
 
 @Injectable()
 export class TareasService {
-  private tareas: Tarea[] = [];
+  // private tareas: Tarea[] = [];
 
-  getAllTareas(): Tarea[] {
+  /* getAllTareas(): Tarea[] {
     return this.tareas;
   }
 
@@ -63,5 +62,5 @@ export class TareasService {
     }
 
     return tareas;
-  }
+  } */
 }
