@@ -11,7 +11,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { TareasService } from './tareas.service';
-import { EstadoTarea, Tarea } from './tarea.model';
+import { TareaEntity } from './tarea.entity';
 import { CrearTareaDto } from './dto/crear-tarea-dto';
 import { ObtenerTareaFilterDto } from './dto/obtener-tarea-filter.dto';
 import { TareaEstadoValidationPipe } from './pipes/tarea-estado-validation.pipe';
@@ -20,7 +20,12 @@ import { TareaEstadoValidationPipe } from './pipes/tarea-estado-validation.pipe'
 export class TareasController {
   constructor(private tareaService: TareasService) {}
 
-  @Get()
+  @Get('/:id')
+  getTareaById(@Param('id') id: number): Promise<TareaEntity> {
+    return this.tareaService.getTareaById(id);
+  }
+
+  /* @Get()
   getTareas(@Query(ValidationPipe) filterDto: ObtenerTareaFilterDto): Tarea[] {
     console.log(filterDto);
 
@@ -53,5 +58,5 @@ export class TareasController {
     @Body('estado', TareaEstadoValidationPipe) status: EstadoTarea,
   ): Tarea {
     return this.tareaService.updateTareaStatus(id, status);
-  }
+  } */
 }

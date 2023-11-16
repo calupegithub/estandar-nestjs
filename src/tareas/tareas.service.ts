@@ -1,14 +1,32 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Tarea, EstadoTarea } from './tarea.model';
-import { v1 as uuid } from 'uuid';
+
 import { CrearTareaDto } from './dto/crear-tarea-dto';
 import { ObtenerTareaFilterDto } from './dto/obtener-tarea-filter.dto';
+import { TareaRepository } from './tarea.repository';
+import { InjectRepository } from '@nestjs/typeorm';
+import { TareaEntity } from './tarea.entity';
 
 @Injectable()
 export class TareasService {
-  private tareas: Tarea[] = [];
+  constructor(private taskRepsotiry: TareaRepository) {}
 
-  getAllTareas(): Tarea[] {
+  async getTareaById(id: number): Promise<TareaEntity> {
+    console.log('id', id);
+
+    const tarea = this.taskRepsotiry.findOne({
+      where: {
+        id: id,
+      },
+    });
+
+    if (!tarea) {
+      throw new NotFoundException(`La tarea con ID ${id} no existe`);
+    }
+
+    return tarea;
+  }
+  //private tareas: Tarea[] = [];
+  /* getAllTareas(): Tarea[] {
     return this.tareas;
   }
 
@@ -63,5 +81,5 @@ export class TareasService {
     }
 
     return tareas;
-  }
+  } */
 }
