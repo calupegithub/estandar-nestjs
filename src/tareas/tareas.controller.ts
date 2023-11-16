@@ -4,9 +4,9 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
-  Query,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -15,16 +15,32 @@ import { TareaEntity } from './tarea.entity';
 import { CrearTareaDto } from './dto/crear-tarea-dto';
 import { ObtenerTareaFilterDto } from './dto/obtener-tarea-filter.dto';
 import { TareaEstadoValidationPipe } from './pipes/tarea-estado-validation.pipe';
+import { EstadoTarea } from './estado-tarea.enum';
 
 @Controller('tareas')
 export class TareasController {
   constructor(private tareaService: TareasService) {}
 
   @Get('/:id')
-  getTareaById(@Param('id') id: number): Promise<TareaEntity> {
+  getTareaById(@Param('id', ParseIntPipe) id: number): Promise<TareaEntity> {
     return this.tareaService.getTareaById(id);
   }
-
+  @Post()
+  @UsePipes(ValidationPipe)
+  crearTarea(@Body() crearTareaDto: CrearTareaDto): Promise<TareaEntity> {
+    return this.tareaService.crearTarea(crearTareaDto);
+  }
+  @Delete('/:id')
+  deleteTarea(@Param('id', ParseIntPipe) id: number): Promise<void> {
+    return this.tareaService.deleteTarea(id);
+  }
+  @Patch('/:id/status')
+  updateTareaStatus(
+    @Param('id', ParseIntPipe) id: number,
+    @Body('estado', TareaEstadoValidationPipe) status: EstadoTarea,
+  ): Promise<TareaEntity> {
+    return this.tareaService.updateTareaStatus(id, status);
+  }
   /* @Get()
   getTareas(@Query(ValidationPipe) filterDto: ObtenerTareaFilterDto): Tarea[] {
     console.log(filterDto);

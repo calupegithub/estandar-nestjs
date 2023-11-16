@@ -1,19 +1,17 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-
 import { CrearTareaDto } from './dto/crear-tarea-dto';
 import { ObtenerTareaFilterDto } from './dto/obtener-tarea-filter.dto';
 import { TareaRepository } from './tarea.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TareaEntity } from './tarea.entity';
+import { EstadoTarea } from './estado-tarea.enum';
 
 @Injectable()
 export class TareasService {
   constructor(private taskRepsotiry: TareaRepository) {}
 
   async getTareaById(id: number): Promise<TareaEntity> {
-    console.log('id', id);
-
-    const tarea = this.taskRepsotiry.findOne({
+    const tarea = await this.taskRepsotiry.findOne({
       where: {
         id: id,
       },
@@ -23,6 +21,26 @@ export class TareasService {
       throw new NotFoundException(`La tarea con ID ${id} no existe`);
     }
 
+    return tarea;
+  }
+  async crearTarea(crearTareaDto: CrearTareaDto): Promise<TareaEntity> {
+    return this.taskRepsotiry.crearTarea(crearTareaDto);
+  }
+
+  async deleteTarea(id: number): Promise<void> {
+    const resultado = await this.taskRepsotiry.delete(id);
+    if (resultado.affected == 0) {
+      throw new NotFoundException(`La tarea con ID ${id} no existe`);
+    }
+  }
+
+  async updateTareaStatus(
+    id: number,
+    status: EstadoTarea,
+  ): Promise<TareaEntity> {
+    const tarea = await this.getTareaById(id);
+    tarea.estado = status;
+    await tarea.save();
     return tarea;
   }
   //private tareas: Tarea[] = [];
