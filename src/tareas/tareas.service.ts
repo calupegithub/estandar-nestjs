@@ -43,6 +43,11 @@ export class TareasService {
     await tarea.save();
     return tarea;
   }
+
+  async getTareas(filterDto: ObtenerTareaFilterDto): Promise<TareaEntity[]> {
+    return this.taskRepsotiry.getTareas(filterDto);
+  }
+
   //private tareas: Tarea[] = [];
   /* getAllTareas(): Tarea[] {
     return this.tareas;

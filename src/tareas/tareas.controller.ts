@@ -7,6 +7,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Query,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -41,17 +42,14 @@ export class TareasController {
   ): Promise<TareaEntity> {
     return this.tareaService.updateTareaStatus(id, status);
   }
-  /* @Get()
-  getTareas(@Query(ValidationPipe) filterDto: ObtenerTareaFilterDto): Tarea[] {
-    console.log(filterDto);
-
-    if (Object.keys(filterDto).length) {
-      return this.tareaService.getTaskWithFilter(filterDto);
-    } else {
-      return this.tareaService.getAllTareas();
-    }
+  @Get()
+  getTareas(
+    @Query(ValidationPipe) filterDto: ObtenerTareaFilterDto,
+  ): Promise<TareaEntity[]> {
+    return this.tareaService.getTareas(filterDto);
   }
 
+  /*
   @Get('/:id')
   getTareaById(@Param('id') id: string): Tarea {
     return this.tareaService.getTareaById(id);
