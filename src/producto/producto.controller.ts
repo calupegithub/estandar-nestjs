@@ -10,7 +10,6 @@ import {
 import { ProductoService } from './producto.service';
 import { CreateProductoDto } from './dto/create-producto.dto';
 import { UpdateProductoDto } from './dto/update-producto.dto';
-import { InjectRepository } from '@nestjs/typeorm';
 import { Producto } from './entities/producto.entity';
 
 @Controller('producto')
