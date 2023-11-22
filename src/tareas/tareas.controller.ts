@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
   Query,
@@ -21,10 +22,15 @@ export class TareasController {
   constructor(private tareaService: TareasService) {}
 
   @Get('/:id')
-  getTareaById(@Param('id') id: number): Promise<TareaEntity> {
+  getTareaById(@Param('id', ParseIntPipe) id: number): Promise<TareaEntity> {
     return this.tareaService.getTareaById(id);
   }
 
+  @Post()
+  @UsePipes(ValidationPipe)
+  crearTarea(@Body() crearTareaDto: CrearTareaDto): Promise<TareaEntity> {
+    return this.tareaService.crearTarea(crearTareaDto);
+  }
   /* @Get()
   getTareas(@Query(ValidationPipe) filterDto: ObtenerTareaFilterDto): Tarea[] {
     console.log(filterDto);

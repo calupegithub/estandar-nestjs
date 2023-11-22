@@ -1,9 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-
 import { CrearTareaDto } from './dto/crear-tarea-dto';
-import { ObtenerTareaFilterDto } from './dto/obtener-tarea-filter.dto';
 import { TareaRepository } from './tarea.repository';
-import { InjectRepository } from '@nestjs/typeorm';
 import { TareaEntity } from './tarea.entity';
 
 @Injectable()
@@ -25,6 +22,11 @@ export class TareasService {
 
     return tarea;
   }
+
+  async crearTarea(crearTareaDto: CrearTareaDto): Promise<TareaEntity> {
+    return this.taskRepsotiry.crearTarea(crearTareaDto);
+  }
+
   //private tareas: Tarea[] = [];
   /* getAllTareas(): Tarea[] {
     return this.tareas;
