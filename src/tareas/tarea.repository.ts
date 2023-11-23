@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { TareaEntity } from './tarea.entity';
 import { CrearTareaDto } from './dto/crear-tarea-dto';
 import { EstadoTarea } from './estado-tarea.enum';
+import { ObtenerTareaFilterDto } from './dto/obtener-tarea-filter.dto';
 
 @Injectable()
 export class TareaRepository extends Repository<TareaEntity> {
@@ -20,5 +21,23 @@ export class TareaRepository extends Repository<TareaEntity> {
     await tarea.save();
 
     return tarea;
+  }
+
+  async getTareas(filterDto: ObtenerTareaFilterDto): Promise<TareaEntity[]> {
+    const { estado, buscar } = filterDto;
+    const query = this.createQueryBuilder('tarea');
+    if (estado) {
+      query.andWhere('tarea.estado = :estado', { estado });
+    }
+    if (buscar) {
+      query.andWhere(
+        '(tarea.titulo LIKE :buscar OR tarea.descripcion LIKE :buscar)',
+        { buscar: `%${buscar}%` },
+      );
+    }
+    const tareas = query.getMany();
+    console.log('Aqui.');
+
+    return tareas;
   }
 }

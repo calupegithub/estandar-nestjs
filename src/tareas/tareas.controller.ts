@@ -45,6 +45,13 @@ export class TareasController {
   ): Promise<number> {
     return this.tareaService.updateTareaStatus(id, status);
   }
+  @Get()
+  async getTareas(
+    @Query(ValidationPipe) filterDto: ObtenerTareaFilterDto,
+  ): Promise<TareaEntity[]> {
+    return this.tareaService.getTareas(filterDto);
+  }
+
   /* @Get()
   getTareas(@Query(ValidationPipe) filterDto: ObtenerTareaFilterDto): Tarea[] {
     console.log(filterDto);

@@ -3,6 +3,8 @@ import { CrearTareaDto } from './dto/crear-tarea-dto';
 import { TareaRepository } from './tarea.repository';
 import { TareaEntity } from './tarea.entity';
 import { EstadoTarea } from './estado-tarea.enum';
+import { promises } from 'dns';
+import { ObtenerTareaFilterDto } from './dto/obtener-tarea-filter.dto';
 
 @Injectable()
 export class TareasService {
@@ -44,6 +46,11 @@ export class TareasService {
     }
     return resultado.affected;
   }
+
+  async getTareas(filterDto: ObtenerTareaFilterDto): Promise<TareaEntity[]> {
+    return this.taskRepsotiry.getTareas(filterDto);
+  }
+
   //private tareas: Tarea[] = [];
   /* getAllTareas(): Tarea[] {
     return this.tareas;
