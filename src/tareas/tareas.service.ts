@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CrearTareaDto } from './dto/crear-tarea-dto';
 import { TareaRepository } from './tarea.repository';
 import { TareaEntity } from './tarea.entity';
+import { EstadoTarea } from './estado-tarea.enum';
 
 @Injectable()
 export class TareasService {
@@ -27,6 +28,22 @@ export class TareasService {
     return this.taskRepsotiry.crearTarea(crearTareaDto);
   }
 
+  async deleteTarea(id: number): Promise<void> {
+    const resultado = await this.taskRepsotiry.delete(id);
+    if (resultado.affected == 0) {
+      throw new NotFoundException(`La tarea con ID ${id} no existe.`);
+    }
+  }
+
+  async updateTareaStatus(id: number, estado: EstadoTarea): Promise<number> {
+    /* const tarea = await this.getTareaById(id);
+    tarea.estado = status;
+    await tarea.save(); */
+    const resultado = await this.taskRepsotiry.update(id, { estado });
+    if (resultado.affected == 0) {
+    }
+    return resultado.affected;
+  }
   //private tareas: Tarea[] = [];
   /* getAllTareas(): Tarea[] {
     return this.tareas;
