@@ -2,7 +2,6 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CrearTareaDto } from './dto/crear-tarea-dto';
 import { ObtenerTareaFilterDto } from './dto/obtener-tarea-filter.dto';
 import { TareaRepository } from './tarea.repository';
-import { InjectRepository } from '@nestjs/typeorm';
 import { TareaEntity } from './tarea.entity';
 import { EstadoTarea } from './estado-tarea.enum';
 
